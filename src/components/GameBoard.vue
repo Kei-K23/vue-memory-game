@@ -40,7 +40,9 @@ initializeGame();
 </script>
 
 <template>
-  <div class="max-w-4xl">
-    <CardComponent v-for="card in cards" :key="card.id" :card="card" />
+  <div class="w-[800px]">
+    <div class="grid grid-cols-5 gap-5 mt-10 w-full">
+      <CardComponent v-for="card in cards" :key="card.id" :card="card" />
+    </div>
   </div>
 </template>

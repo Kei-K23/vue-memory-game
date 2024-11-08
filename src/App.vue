@@ -3,8 +3,14 @@ import GameBoard from "./components/GameBoard.vue";
 </script>
 
 <template>
-  <main class="min-h-screen flex items-center justify-center container">
-    <h1 class="">Memory Game</h1>
-    <GameBoard />
+  <main
+    class="min-h-screen w-full bg-neutral-900 flex flex-col items-center justify-center mx-auto text-neutral-100"
+  >
+    <div
+      class="flex flex-col items-center justify-center container mx-auto w-full"
+    >
+      <h1 class="text-3xl font-bold">V - Memory Game</h1>
+      <GameBoard />
+    </div>
   </main>
 </template>
