@@ -3,6 +3,7 @@ import { computed, ref } from "vue";
 import { Card, GameState as GameStateType } from "../type/game";
 import { useStorage } from "@vueuse/core";
 import CardComponent from "./CardComponent.vue";
+import GameState from "./GameState.vue";
 
 const emojis = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯"];
 const cards = ref<Card[]>([]);
@@ -90,6 +91,7 @@ initializeGame();
 
 <template>
   <div class="w-[800px]">
+    <GameState :state="state" />
     <div class="grid grid-cols-5 gap-5 mt-10 w-full">
       <CardComponent
         v-for="card in cards"
