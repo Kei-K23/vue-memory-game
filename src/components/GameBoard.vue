@@ -11,13 +11,13 @@ const emojis = ["🐶", "🐱"];
 const cards = ref<Card[]>([]);
 const flippedCards = ref<Card[]>([]);
 const showConfetti = ref<boolean>(false);
-
+const bestTimeStorage = useStorage("vue-memory-game", 0);
 // Initial game state value
 const state = ref<GameStateType>({
   moves: 0,
   matched: 0,
   startTime: Date.now(),
-  bestRecord: Number(useStorage("vue_memory_game", 0).value),
+  bestRecord: bestTimeStorage.value,
 });
 
 // Get the reactive value
@@ -40,7 +40,7 @@ const initializeGame = () => {
     moves: 0,
     matched: 0,
     startTime: Date.now(),
-    bestRecord: state.value.bestRecord,
+    bestRecord: bestTimeStorage.value,
   };
 };
 
@@ -66,14 +66,14 @@ const checkMatch = () => {
     cardTwo.isMatched = true;
     state.value.matched++;
     flippedCards.value = []; // Clear the flipped card array
-    console.log(isGameComplete.value);
 
     // Check the game completed
     if (isGameComplete.value) {
       const currentTime = Date.now() - state.value.startTime;
-      if (!state.value.bestRecord || currentTime < state.value.bestRecord) {
+
+      if (!state.value.bestRecord || currentTime > state.value.bestRecord) {
+        bestTimeStorage.value = currentTime;
         state.value.bestRecord = currentTime;
-        useStorage("vue_memory_game", currentTime);
       }
       showConfetti.value = true;
       setTimeout(() => {
@@ -102,6 +102,14 @@ initializeGame();
         :card="card"
         @click="handleCardClick(card)"
       />
+    </div>
+    <div class="flex items-center justify-center mt-8">
+      <button
+        class="px-4 py-1.5 bg-emerald-600 rounded-md hover:bg-emerald-600/80 transition-colors"
+        @click="initializeGame"
+      >
+        New Game
+      </button>
     </div>
     <div class="flex items-center justify-center">
       <ConfettiExplosion

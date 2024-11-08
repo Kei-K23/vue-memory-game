@@ -7,8 +7,8 @@ const props = defineProps<{
 }>();
 
 const elapsedTime = computed(() => {
-  const second = Math.floor((Date.now() - props.state.startTime) / 1000);
-  return `${Math.floor(second / 60)}:${(second % 60)
+  const seconds = Math.floor((Date.now() - props.state.startTime) / 1000);
+  return `${Math.floor(seconds / 60)}:${(seconds % 60)
     .toString()
     .padStart(2, "0")}`;
 });
