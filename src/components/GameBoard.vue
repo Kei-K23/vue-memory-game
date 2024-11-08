@@ -7,8 +7,8 @@ import GameState from "./GameState.vue";
 import ConfettiExplosion from "vue-confetti-explosion";
 import GameControls from "./GameControls.vue";
 
-// const emojis = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯"];
-const emojis = ["🐶", "🐱"];
+const emojis = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯"];
+// const emojis = ["🐶", "🐱"];
 const cards = ref<Card[]>([]);
 const flippedCards = ref<Card[]>([]);
 const showConfetti = ref<boolean>(false);
@@ -111,13 +111,13 @@ initializeGame();
 </script>
 
 <template>
-  <div class="w-[800px]">
+  <div>
     <GameState
       :state="state"
       :is-game-started="isGameStarted"
       :is-game-completed="isGameComplete"
     />
-    <div class="grid grid-cols-5 gap-5 mt-10 w-full">
+    <div class="grid grid-cols-5 gap-5 mt-10">
       <CardComponent
         v-for="card in cards"
         :key="card.id"

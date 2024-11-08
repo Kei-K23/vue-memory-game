@@ -47,21 +47,23 @@ const formatTime = (ms: number) => {
 
 <template>
   <div class="grid grid-cols-4 gap-4 text-center mt-5">
-    <div class="bg-neutral-800 shadow-md p-2 rounded-xl">
-      <h3 class="text-lg font-medium">Moves</h3>
-      <p class="text-2xl text-emerald-600">{{ state.moves }}</p>
+    <div class="bg-neutral-800 shadow-md p-1 md:p-2 rounded-xl">
+      <h3 class="text-sm md:text-lg md:font-medium">Moves</h3>
+      <p class="text-[15px] md:text-2xl text-emerald-600">{{ state.moves }}</p>
     </div>
-    <div class="bg-neutral-800 shadow-md p-2 rounded-xl">
-      <h3 class="text-lg font-medium">Matches</h3>
-      <p class="text-2xl text-emerald-600">{{ state.matched }}</p>
+    <div class="bg-neutral-800 shadow-md p-1 md:p-2 rounded-xl">
+      <h3 class="text-sm md:text-lg md:font-medium">Matches</h3>
+      <p class="text-[15px] md:text-2xl text-emerald-600">
+        {{ state.matched }}
+      </p>
     </div>
-    <div class="bg-neutral-800 shadow-md p-2 rounded-xl">
-      <h3 class="text-lg font-medium">Time</h3>
-      <p class="text-2xl text-emerald-600">{{ elapsedTime }}</p>
+    <div class="bg-neutral-800 shadow-md p-1 md:p-2 rounded-xl">
+      <h3 class="text-sm md:text-lg md:font-medium">Times</h3>
+      <p class="text-[15px] md:text-2xl text-emerald-600">{{ elapsedTime }}</p>
     </div>
-    <div class="bg-neutral-800 shadow-md p-2 rounded-xl">
-      <h3 class="text-lg font-medium">Best Time</h3>
-      <p class="text-2xl text-emerald-600">
+    <div class="bg-neutral-800 shadow-md p-1 md:p-2 rounded-xl">
+      <h3 class="text-sm md:text-lg md:font-medium">Best Time</h3>
+      <p class="text-[15px] md:text-2xl text-emerald-600">
         {{ state.bestRecord ? formatTime(state.bestRecord) : "--:--" }}
       </p>
     </div>

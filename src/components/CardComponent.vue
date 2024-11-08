@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
   <div
-    class="aspect-square perspective-1000"
+    class="size-[60px] md:size-[90px]"
     :class="{ 'cursor-pointer': !card.isMatched }"
   >
     <div
