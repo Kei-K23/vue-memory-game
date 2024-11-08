@@ -5,6 +5,7 @@ import { useStorage } from "@vueuse/core";
 import CardComponent from "./CardComponent.vue";
 import GameState from "./GameState.vue";
 import ConfettiExplosion from "vue-confetti-explosion";
+import GameControls from "./GameControls.vue";
 
 // const emojis = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯"];
 const emojis = ["🐶", "🐱"];
@@ -12,6 +13,7 @@ const cards = ref<Card[]>([]);
 const flippedCards = ref<Card[]>([]);
 const showConfetti = ref<boolean>(false);
 const bestTimeStorage = useStorage("vue-memory-game", 0);
+const isGameStarted = ref<boolean>(false);
 // Initial game state value
 const state = ref<GameStateType>({
   moves: 0,
@@ -25,7 +27,7 @@ const isGameComplete = computed(() => {
   return cards.value.every((card) => card.isMatched);
 });
 
-const initializeGame = () => {
+const initializeGame = (isRestart = false) => {
   const shuffledCard: Card[] = [...emojis, ...emojis]
     .sort(() => Math.random() - 0.5)
     .map((emoji, index) => ({
@@ -42,10 +44,26 @@ const initializeGame = () => {
     startTime: Date.now(),
     bestRecord: bestTimeStorage.value,
   };
+
+  if (isRestart) {
+    isGameStarted.value = true;
+  } else {
+    isGameStarted.value = false;
+  }
+};
+
+const startGame = () => {
+  isGameStarted.value = true;
+  state.value.startTime = Date.now();
 };
 
 const handleCardClick = (card: Card) => {
-  if (flippedCards.value.length === 2 || card.isFlipped || card.isMatched) {
+  if (
+    !isGameStarted.value ||
+    flippedCards.value.length === 2 ||
+    card.isFlipped ||
+    card.isMatched
+  ) {
     return;
   }
 
@@ -71,7 +89,7 @@ const checkMatch = () => {
     if (isGameComplete.value) {
       const currentTime = Date.now() - state.value.startTime;
 
-      if (!state.value.bestRecord || currentTime > state.value.bestRecord) {
+      if (!state.value.bestRecord || currentTime < state.value.bestRecord) {
         bestTimeStorage.value = currentTime;
         state.value.bestRecord = currentTime;
       }
@@ -94,7 +112,11 @@ initializeGame();
 
 <template>
   <div class="w-[800px]">
-    <GameState :state="state" />
+    <GameState
+      :state="state"
+      :is-game-started="isGameStarted"
+      :is-game-completed="isGameComplete"
+    />
     <div class="grid grid-cols-5 gap-5 mt-10 w-full">
       <CardComponent
         v-for="card in cards"
@@ -103,14 +125,12 @@ initializeGame();
         @click="handleCardClick(card)"
       />
     </div>
-    <div class="flex items-center justify-center mt-8">
-      <button
-        class="px-4 py-1.5 bg-emerald-600 rounded-md hover:bg-emerald-600/80 transition-colors"
-        @click="initializeGame"
-      >
-        New Game
-      </button>
-    </div>
+    <GameControls
+      :is-game-started="isGameStarted"
+      :is-game-completed="isGameComplete"
+      @start="startGame"
+      @restart="initializeGame(true)"
+    />
     <div class="flex items-center justify-center">
       <ConfettiExplosion
         v-if="showConfetti"

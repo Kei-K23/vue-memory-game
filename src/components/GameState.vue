@@ -1,13 +1,37 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onUnmounted, ref, watchEffect } from "vue";
 import { GameState } from "../type/game";
 
 const props = defineProps<{
   state: GameState;
+  isGameStarted: boolean;
+  isGameCompleted: boolean;
 }>();
 
+const currentTime = ref(Date.now());
+let timer: number | undefined;
+
+watchEffect(() => {
+  if (!props.isGameCompleted && props.isGameStarted) {
+    timer = setInterval(() => {
+      currentTime.value = Date.now();
+    }, 1000);
+  } else if (props.isGameCompleted && timer) {
+    clearInterval(timer);
+  }
+});
+
+onUnmounted(() => {
+  if (timer) {
+    clearInterval(timer);
+  }
+});
+
 const elapsedTime = computed(() => {
-  const seconds = Math.floor((Date.now() - props.state.startTime) / 1000);
+  if (!props.isGameStarted) return "0:00";
+  const seconds = Math.floor(
+    (currentTime.value - props.state.startTime) / 1000
+  );
   return `${Math.floor(seconds / 60)}:${(seconds % 60)
     .toString()
     .padStart(2, "0")}`;
