@@ -28,9 +28,9 @@ defineProps<{
 
       <!-- Card Back -->
       <div
-        class="absolute w-full h-full bg-white rounded-xl flex items-center justify-center rotate-y-180 backface-hidden border-2"
+        class="absolute w-full h-full bg-neutral-50 rounded-xl flex items-center justify-center rotate-y-180 backface-hidden border-4"
         :class="{
-          'border-green-500': card.isMatched,
+          'border-green-600': card.isMatched,
           'border-emerald-600': !card.isMatched,
         }"
       >
