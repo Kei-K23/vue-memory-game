@@ -4,8 +4,10 @@ import { Card, GameState as GameStateType } from "../type/game";
 import { useStorage } from "@vueuse/core";
 import CardComponent from "./CardComponent.vue";
 import GameState from "./GameState.vue";
+import ConfettiExplosion from "vue-confetti-explosion";
 
-const emojis = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯"];
+// const emojis = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯"];
+const emojis = ["🐶", "🐱"];
 const cards = ref<Card[]>([]);
 const flippedCards = ref<Card[]>([]);
 const showConfetti = ref<boolean>(false);
@@ -64,6 +66,7 @@ const checkMatch = () => {
     cardTwo.isMatched = true;
     state.value.matched++;
     flippedCards.value = []; // Clear the flipped card array
+    console.log(isGameComplete.value);
 
     // Check the game completed
     if (isGameComplete.value) {
@@ -72,11 +75,11 @@ const checkMatch = () => {
         state.value.bestRecord = currentTime;
         useStorage("vue_memory_game", currentTime);
       }
+      showConfetti.value = true;
+      setTimeout(() => {
+        showConfetti.value = false;
+      }, 3000);
     }
-    showConfetti.value = true;
-    setTimeout(() => {
-      showConfetti.value = false;
-    }, 3000);
   } else {
     setTimeout(() => {
       cardOne.isFlipped = false;
@@ -98,6 +101,13 @@ initializeGame();
         :key="card.id"
         :card="card"
         @click="handleCardClick(card)"
+      />
+    </div>
+    <div class="flex items-center justify-center">
+      <ConfettiExplosion
+        v-if="showConfetti"
+        :particleCount="200"
+        :force="0.3"
       />
     </div>
   </div>
